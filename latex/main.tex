@@ -1,0 +1,273 @@
+\documentclass[a4paper,12pt]{report}
+
+% Packages for supporting German language and umlauts
+\usepackage[utf8]{inputenc}  % Use UTF-8 encoding
+\usepackage[T1]{fontenc}     % Use T1 font encoding
+\usepackage[ngerman]{babel}  % German language support
+\usepackage{csquotes}        % Context-sensitive quotation marks
+
+% Set page margins
+\usepackage{geometry}
+\geometry{
+    top=2cm,
+    bottom=2cm,
+    left=2cm,
+    right=2cm
+}
+
+
+
+
+% Package for including graphics
+\usepackage{graphicx}
+\graphicspath{{./images/}}
+
+% Package for tables
+\usepackage{adjustbox}
+\usepackage{multirow}
+\usepackage{tabularx}
+
+% Packages for mathematics
+\usepackage{amsmath}
+\usepackage{amssymb}
+
+% Packages for code listings
+\usepackage{listings}
+\usepackage{xcolor}
+% \usepackage{caption}
+\usepackage{caption}
+% \captionsetup{aboveskip=10pt, belowskip=0pt}
+
+
+
+
+% Define custom colors for listings
+\definecolor{backcolour}{rgb}{0.95,0.95,0.92}
+\definecolor{codegreen}{rgb}{0,0.6,0}
+
+% Custom style for listings
+\lstdefinestyle{myStyle}{
+    backgroundcolor=\color{backcolour},   
+    commentstyle=\color{codegreen},
+    keywordstyle=\color{blue}\bfseries,
+    stringstyle=\color{orange},
+    basicstyle=\ttfamily\footnotesize,
+    breakatwhitespace=false,         
+    breaklines=true,                 
+    keepspaces=true,                 
+    numbers=left,       
+    numbersep=5pt,                  
+    showspaces=false,                
+    showstringspaces=false,
+    showtabs=false,                  
+    tabsize=2,
+    morekeywords={true, false, null, y, n}
+}
+
+% Set the title for the listings list
+\renewcommand{\lstlistlistingname}{Code Beispiele}
+
+% Apply the custom style to all listings
+\lstset{
+    style=myStyle,
+    captionpos=b, % Position der Beschriftung
+    label=lst:example, % Beispielhaftes Label
+    abovecaptionskip=0pt
+}
+
+% Package for creating and managing glossaries and acronyms
+\usepackage[toc,acronym]{glossaries}
+\loadglsentries{glossary}    % Load glossary entries
+\loadglsentries{acronyms}    % Load acronym entries
+\makeglossaries
+
+% Package for hyperlinks with hidden link boxes
+\usepackage[hidelinks]{hyperref}
+\usepackage{xurl}
+
+
+
+
+% Package for citations with numeric style
+\usepackage[backend=bibtex,style=numeric,sorting=none]{biblatex}
+\addbibresource{references.bib}
+
+% Package for TikZ graphics
+\usepackage{tikz}
+\usetikzlibrary{shapes.multipart, positioning, arrows.meta, matrix}
+
+% Other useful packages
+\usepackage{float}      % Improved interface for floating objects
+\usepackage{pdfpages}   % Include PDF documents
+\usepackage{lipsum}     % For placeholder text
+
+% Suppress specific warnings from biblatex
+\usepackage{silence}
+\WarningsOff[biblatex]
+
+% Configure superscript citations
+\makeatletter
+\renewcommand\@makefntext[1]{%
+    \noindent\makebox[0pt][r]{\@makefnmark\ }#1}
+\makeatother
+
+% Add horizontal line above footnotes
+\usepackage{etoolbox}
+\patchcmd{\footnoterule}{\kern-3pt}{\kern-3pt}{}{}
+\renewcommand{\footnoterule}{%
+  \kern -3pt
+  \hbox to \columnwidth{\color{black}\leaders\hrule height 0.4pt\hfill}%
+  \kern 2.6pt
+}
+
+% Define new citation macro for footnotes
+\newcommand{\myfootcite}[2]{\footnote{\citeauthor{#1} (\citeyear{#1}), #2}}
+
+% Define new citation macro for footnotes with only one argument
+\newcommand{\mycitefoot}[1]{\footnote{\citeauthor{#1} (\citeyear{#1})}}
+
+
+% Set paragraph formatting
+\setlength{\parindent}{0pt}  % No indentation
+\setlength{\parskip}{1em}    % Add space between paragraphs
+
+% Global equation numbering by chapter
+\numberwithin{equation}{chapter}
+
+\usepackage{subcaption}
+
+% Package for section formatting
+\usepackage{titlesec}
+
+% Format for chapters
+\titleformat{\chapter}[hang]
+{\normalfont\LARGE\bfseries}{\thechapter\ }{10pt}{\LARGE\bfseries}
+\titlespacing*{\chapter}{0pt}{-20pt}{10pt}
+
+% Format for unnumbered chapters (e.g., lists)
+\titleformat{name=\chapter,numberless}[block]
+{\normalfont\LARGE\bfseries}{}{10pt}{\LARGE\bfseries}
+\titlespacing*{\chapter}{0pt}{-20pt}{10pt}
+
+\begin{document}
+
+\includepdf[pages=1]{deckblatt.pdf}
+
+
+% Title page without numbering
+\pagenumbering{gobble}
+
+% Title page
+% \begin{titlepage}
+%     \centering
+%     \includegraphics[width=0.3\textwidth]{htw_logo.jpg}\par
+%     \vspace*{1.6cm}
+%     {\Huge\bfseries Entwicklung und Analyse von Algorithmen für die automatische Indoor-Ortung basierend auf WiFi-Fingerprints \par}
+%     \vspace{1.5cm}
+%     {\LARGE Bachelorarbeit \par}
+%     \vspace{2cm}
+%     {\Large\itshape Friedrich Völkers \par}
+%     {\itshape 585012 \par}
+%     \vfill
+%     Betreuer: Prof. Dr. Alexander Huhn \\
+%     Zweitbetreuer: Prof. Dr.-Ing. Thomas Schwotzer
+%     \vspace{1cm}
+%     \vfill
+%     {\large \today\par}
+% \end{titlepage}
+
+% Directories with Roman numbering
+\pagenumbering{Roman}
+
+% Table of contents without numbering
+\tableofcontents
+
+% Verzeichnis der Listings
+% \listofcodes
+
+\begingroup
+\setlength{\parskip}{1em} % Adjust the spacing for the list of listings
+\lstlistoflistings
+\endgroup
+
+
+% List of figures without numbering
+\listoffigures
+
+% List of tables without numbering
+\listoftables
+
+% Main content with Arabic numbering
+\clearpage
+\pagenumbering{arabic}
+
+% Including chapters
+
+
+
+
+% \input{chapters/01_einleitung}
+% \input{chapters/02_grundlagen}
+% \input{chapters/03_systemarchitektur}
+% \input{chapters/04_implementierungsdetails}
+% \input{chapters/05_datenerfassung_aufbereitung}
+% \input{chapters/06_vergleich_algorithmen}
+% \input{chapters/07_erweiterte_untersuchungen}
+% \input{chapters/08_ergebnisse_diskussion}
+% \input{chapters/09_fazit_ausblick}
+
+\input{chapters/01_einleitung}
+\input{chapters/02_grundlagen}
+\input{chapters/03_algorithmen_und_methoden}
+\input{chapters/04_systemarchitektur_und_implementierung}
+\input{chapters/05_datenerhebung_und_analyse}
+\input{chapters/06_fazit_und_ausblick}
+
+
+% Appendices
+\appendix
+\clearpage
+\pagenumbering{Roman}
+\setcounter{page}{7}
+
+% Including appendices
+% \input{appendices/appendix1}
+% \input{appendices/python_code}
+
+% Bibliography without numbering
+\printbibliography
+
+\clearpage
+
+
+% Print glossary and acronym list
+\begin{minipage}{\textwidth}
+    \printglossary[type=main,title=Glossar]
+    \vspace{7em} % optional space between glossary and acronym list
+    \printglossary[type=\acronymtype,title=Abkürzungsverzeichnis]
+\end{minipage}
+
+
+
+% Affidavit
+\clearpage
+\chapter*{Eidesstattliche Versicherung}
+Hiermit versichere ich, dass ich die vorliegende Arbeit selbstständig und ohne unzulässige Hilfe Dritter angefertigt habe. Sämtliche Stellen, die wörtlich oder sinngemäß aus veröffentlichten oder unveröffentlichten Quellen entnommen sind, habe ich als solche kenntlich gemacht. Die Arbeit hat in gleicher oder ähnlicher Form noch keiner Prüfungsbehörde vorgelegen.
+
+\vspace{3cm}
+
+\begin{table}[h]
+    \begin{tabularx}{\textwidth}{p{5cm}X p{5cm}}
+        Berlin, 22. August 2024           &  &                                 \\\cline{1-1} \cline{3-3}
+        \vspace{0.1em}Ort, Datum &  & \vspace{0.1em}Friedrich Völkers
+    \end{tabularx}
+\end{table}
+
+
+% Signature
+\vspace{-3.3cm}
+\begin{center}
+    \hspace{11cm}\includegraphics[width=0.25\textwidth]{images/signature.png} % Adjust position
+\end{center}
+
+\end{document}

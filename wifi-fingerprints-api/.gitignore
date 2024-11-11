@@ -1,0 +1,12 @@
+# Ignore the contents of the prometheus_data folder, but keep the empty folder
+prometheus_data/*
+!prometheus_data/.gitkeep
+
+# Ignore the __pycache__ folder in the app directory
+app/__pycache__/
+
+# Ignore the .env file
+.env
+
+# Ignore all .DS_Store files (commonly created by macOS)
+.DS_Store

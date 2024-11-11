@@ -1,0 +1,19 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "Build LaTeX Project",
+      "type": "shell",
+      "command": "latexmk -pdf -outdir=./out main.tex && biber ./out/main && makeglossaries -d ./out main && latexmk -pdf -outdir=./out main.tex && latexmk -pdf -outdir=./out main.tex",
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      },
+      "problemMatcher": [],
+      "options": {
+        "cwd": "${workspaceFolder}"
+      },
+      "detail": "Build LaTeX project using latexmk, biber, and makeglossaries, then clean up auxiliary files"
+    }
+  ]
+}

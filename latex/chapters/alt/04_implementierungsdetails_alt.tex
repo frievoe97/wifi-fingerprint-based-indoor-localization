@@ -1,0 +1,53 @@
+\section{Funktionsweise des Testprogramms}
+\begin{itemize}
+    \item \textbf{Programmübersicht:} Das Testprogramm dient dazu, die Leistungsfähigkeit verschiedener Machine Learning Algorithmen zur Indoor-Ortung basierend auf WiFi-Fingerprints zu evaluieren. Es lädt Konfigurationsparameter aus einer YAML-Datei, ruft Daten von einer API ab, filtert diese nach bestimmten Kriterien und vergleicht die Vorhersagen der Algorithmen unter verschiedenen Parametereinstellungen. Die Ergebnisse werden anschließend in CSV-Dateien gespeichert.
+
+    \item \textbf{Ablauf und Logik:} Der Ablauf des Programms lässt sich wie folgt zusammenfassen:
+        \begin{itemize}
+            \item \textbf{Konfiguration laden:} Mit der Funktion \texttt{load\_config} wird die Konfigurationsdatei \texttt{config.yaml} geladen, die alle notwendigen Einstellungen und Parameter für die Tests enthält.
+            \item \textbf{Erstellen des Ausgabeordners:} Die Funktion \texttt{create\_output\_directory} erstellt einen neuen Ordner, in dem die Ergebnisse gespeichert werden. Der Ordnername enthält einen Zeitstempel, um die Ergebnisse eindeutig zu identifizieren.
+            \item \textbf{Daten abrufen:} Die Funktion \texttt{fetch\_data} ruft die WiFi-Fingerprint-Daten von einer angegebenen URL ab.
+            \item \textbf{Daten filtern:} Falls in der Konfiguration Räume oder Korridore angegeben sind, werden die Daten mit der Funktion \texttt{filter\_data} entsprechend gefiltert.
+            \item \textbf{Parameterkombinationen generieren:} Mit der Funktion \texttt{gene\allowbreak rate\_para\allowbreak meter\_\allowbreak com\allowbreak bi\allowbreak nations} werden alle möglichen Kombinationen der angegebenen Parameterwerte erstellt.
+            \item \textbf{Vorhersagen und Vergleiche:} Die Funktion \texttt{compare\_predictions} vergleicht die Vorhersagen der Algorithmen mit den tatsächlichen Raumdaten. Die Ergebnisse werden in CSV-Dateien gespeichert, wobei jede Datei eine spezifische Parametereinstellung repräsentiert.
+        \end{itemize}
+
+    \item \textbf{Erweiterbarkeit und Anpassung:} Das Programm ist so aufgebaut, dass es leicht erweitert und angepasst werden kann. Neue Parameter oder Algorithmen können einfach in die YAML-Konfigurationsdatei hinzugefügt werden. Die modularen Funktionen ermöglichen es, einzelne Teile des Programms bei Bedarf zu modifizieren oder zu ersetzen, ohne die gesamte Codebasis ändern zu müssen.
+\end{itemize}
+
+\section{Konfiguration über YAML-Dateien}
+\begin{itemize}
+    \item \textbf{Konfigurationsdateien:} Die Konfiguration des Programms erfolgt über eine YAML-Datei (\texttt{config.yaml}), die alle notwendigen Parameter und Einstellungen enthält. Diese Datei ermöglicht eine flexible Anpassung des Testprozesses, ohne dass der Quellcode selbst verändert werden muss.
+
+    \item \textbf{Parameter und Einstellungen:} Die YAML-Datei enthält folgende Hauptparameter:
+        \begin{itemize}
+            \item \textbf{url\_fetch:} Die URL, von der die WiFi-Fingerprint-Daten abgerufen werden.
+            \item \textbf{url\_predict:} Die URL der API, die für die Vorhersagen verwendet wird.
+            \item \textbf{num\_measurements:} Die Anzahl der Messungen, die verarbeitet werden sollen.
+            \item \textbf{rooms und corridors:} Listen von Raum- und Korridornamen, die in die Analyse einbezogen werden sollen.
+            \item \textbf{parameter\_sets:} Verschiedene Sätze von Parametern, die für die Vorhersagen verwendet werden. Jeder Satz enthält spezifische Werte für Algorithmen und deren Einstellungen.
+        \end{itemize}
+
+    \item \textbf{Anwendungsbeispiele:} Ein typisches Beispiel für die YAML-Konfigurationsdatei sieht wie folgt aus:
+        \begin{lstlisting}[caption=.yaml Konfigurationsdatei, label={lst:code_yaml}]
+url_fetch: "http://127.0.0.1:5000/measurements/all"
+url_predict: "http://127.0.0.1:5000/measurements/predict"
+num_measurements: 10
+rooms: ["WH_C_334", "WH_C_335"]
+corridors: ["WH_C_352"]
+parameter_sets:
+    - name: "test"
+    parameters:
+        router_selection: ['all']
+        handle_missing_values_strategy: ['-100']
+        router_presence_threshold: [0]
+        router_rssi_threshold: [-100]
+        value_scaling_strategy: ['none']
+        weights: ["distance"]
+        algorithm:
+            knn_euclidean:
+                k_value: [7]
+        \end{lstlisting}
+        Diese Konfiguration spezifiziert, dass die Daten von \texttt{http://127.0.0.1:5000/\discretionary{}{}{}measure\discretionary{}{}{}ments/\discretionary{}{}{}all} abgerufen und die Vorhersagen bei \texttt{http://127.0.0.1:5000/\discretionary{}{}{}measure\discretionary{}{}{}ments/\discretionary{}{}{}predict} gemacht werden sollen. Es sollen 10 Messungen verarbeitet werden, die entweder in den angegebenen Räumen oder Korridoren aufgenommen wurden. Der Parameter \texttt{parameter\_sets} definiert verschiedene Sätze von Parametern, die für die Vorhersagen verwendet werden.
+\end{itemize}
+
